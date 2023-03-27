@@ -1,0 +1,45 @@
+services:
+  php:
+    image: php:8.1-fpm-alpine3.17
+
+  web:
+    image: nginx:latest
+    ports:
+      - 8080:80
+
+  db:
+    image: mariadb:10.6
+    volumes:
+      - "db-data:/var/lib/mysql"
+    ports:
+      - 3306:3306
+
+  es:
+    image: elasticsearch:7.17.9
+    volumes:
+      - "es-data:/usr/share/elasticsearch/data"
+    environment:
+      discovery.type: single.node
+      xpack.security.enabled: false
+      ES_JAVA_OPTS: =-Xms512m -Xmx512m
+
+  mq:
+    image: rabbitmq:3.9-management
+    volumes:
+      - "mq-data:/var/lib/rabbitmq"
+    ports:
+      - 15672:15672
+
+  redis:
+    image: redis:7.0
+
+  mail:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - 8025:8025
+
+volumes:
+  db-data:
+  es-data:
+  es-plugin-data:
+  mq-data:
