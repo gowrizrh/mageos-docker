@@ -1,0 +1,63 @@
+services:
+  php:
+    build: docker/php
+    volumes:
+      - ./src:/var/www/html
+
+  web:
+    image: nginx
+    ports:
+      - 8080:443
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./src:/var/www/html
+      - ./docker/nginx/nginx.crt:/etc/ssl/certs/nginx.crt
+      - ./docker/nginx/nginx.key:/etc/ssl/private/nginx.key
+
+  db:
+    image: mariadb:10.6
+    environment:
+      - MARIADB_ROOT_PASSWORD=magento2
+      - MARIADB_USER=magento2
+      - MARIADB_PASSWORD=magento2
+      - MARIADB_DATABASE=magento2
+    ports:
+      - 3306:3306
+    volumes:
+      - "db-data:/var/lib/mysql"
+
+  es:
+    image: elasticsearch:7.17.9
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    volumes:
+      - "es-data:/usr/share/elasticsearch/data"
+
+  mq:
+    image: rabbitmq:3.9-management
+    environment:
+      RABBITMQ_NODENAME: "rabbit@mq"
+      RABBITMQ_ERLANG_COOKIE: "erlang-cookie-mq"
+    ports:
+      - 15672:15672
+    volumes:
+      - "mq-data:/var/lib/rabbitmq"
+
+  redis:
+    image: redis:7.0
+    volumes:
+      - redis-data:/data
+
+  mail:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - 8025:8025
+
+volumes:
+  db-data:
+  es-data:
+  es-plugin-data:
+  mq-data:
+  redis-data:
