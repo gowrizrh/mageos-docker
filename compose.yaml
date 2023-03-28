@@ -1,11 +1,18 @@
 services:
   php:
     build: docker/php
+    depends_on:
+      - "db"
+      - "redis"
+      - "es"
+      - "mail"
     volumes:
       - ./src:/var/www/html
 
   web:
     image: nginx
+    depends_on:
+      - "php"
     ports:
       - 8080:443
     volumes:
