@@ -1,12 +1,14 @@
 # Docker Compose Setup for MageOS
+A super simple docker compose setup for local development
 
-Shell into the container
+## Install a new project
+Create an empty `src/` folder in the root
+
 ```bash
-docker compose exec php bash
+docker compose run --rm php bash
 ```
 
-Example Install Command
-
+### Example Install Command
 ```bash
 bin/magento setup:install \
 --cleanup-database \
