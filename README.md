@@ -1,7 +1,7 @@
-Docker Setup for MageOS
+# Docker Compose Setup for MageOS
 
 Shell into the container
-```sh
+```bash
 docker compose exec php bash
 ```
 
@@ -38,11 +38,12 @@ bin/magento setup:install \
 --amqp-password=guest
 ```
 
-# Configure Redis for caching
-```sh
+#### Configure Redis for caching
+
+```bash
 bin/magento setup:config:set --cache-backend=redis --cache-backend-redis-server=redis --cache-backend-redis-db=0
 ```
 
-```sh
+```bash
 bin/magento setup:config:set --page-cache=redis --page-cache-redis-server=redis --page-cache-redis-db=1
 ```
