@@ -1,7 +1,7 @@
 FROM php:8.1.4-fpm-bullseye
 
-ENV UID=1062032646
-ENV GID=1062000513
+ENV UID 1000
+ENV GID 1000
 
 RUN groupadd -g ${GID} --system mygroup
 RUN useradd --no-log-init --create-home --shell /bin/bash --system -s /bin/sh -g mygroup -u ${UID} myuser
