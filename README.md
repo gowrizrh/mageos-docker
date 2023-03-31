@@ -4,19 +4,16 @@ A super simple docker compose setup for local development
 ## Install a new project
 Create an empty `src/` folder in the root
 
-Shell into the php container
+Bring all services up and shell into the php container
 ```bash
-docker compose run --rm php bash
+docker compose up -d
+docker compose exec php bash
 ```
 
 Install MageOS
 ```
 composer create-project --repository-url="https://mirror.mage-os.org/" "magento/project-community-edition:>=2.4.6 <2.4.7" .
 ```
-
-Exit out of the container
-
-Run `docker compose up -d` to bring all services up
 
 Run install command. An example is provided below. Make necessary modifications as you see fit.
 
