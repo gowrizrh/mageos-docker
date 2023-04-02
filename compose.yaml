@@ -9,6 +9,20 @@ services:
     volumes:
       - ./src:/var/www/html
 
+  php-debug:
+    build:
+      context: docker/php
+      target: php-debug
+    depends_on:
+      - "db"
+      - "redis"
+      - "es"
+      - "mail"
+    volumes:
+      - ./src:/var/www/html
+    extra_hosts:
+        - "host.docker.internal:host-gateway"
+      
   web:
     build: docker/nginx
     depends_on:

@@ -1,4 +1,4 @@
-FROM php:8.1.4-fpm-bullseye
+FROM php:8.1.4-fpm-bullseye as php
 
 ENV UID 1000
 ENV GID 1000
@@ -26,3 +26,20 @@ USER myuser
 WORKDIR /var/www/html
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
+
+FROM php as php-debug
+
+USER root
+
+RUN install-php-extensions xdebug
+
+RUN cat <<EOF > $PHP_INI_DIR/conf.d/php-xdebug.ini
+xdebug.mode = debug,profile
+xdebug.client_host = host.docker.internal
+xdebug.client_port = 9003
+xdebug.idekey = PHPSTORM
+xdebug.output_dir=/var/www/html
+xdebug.start_with_request=trigger 
+EOF
+
+USER myuser
