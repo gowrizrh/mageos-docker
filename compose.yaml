@@ -100,6 +100,8 @@ services:
 
   grafana:
     image: grafana/grafana:latest
+    volumes:
+      - grafana-data:/var/lib/grafana
     ports:
       - 3000:3000
     depends_on:
@@ -111,3 +113,4 @@ volumes:
   es-plugin-data:
   mq-data:
   redis-data:
+  grafana-data:
