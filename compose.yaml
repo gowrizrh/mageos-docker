@@ -1,11 +1,15 @@
 services:
   php:
-    build: docker/php
+    build:
+      context: docker/php
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
     depends_on:
-      - "db"
-      - "redis"
-      - "es"
-      - "mail"
+      - db
+      - redis
+      - es
+      - mail
     volumes:
       - ./src:/var/www/html
 
@@ -13,6 +17,9 @@ services:
     build:
       context: docker/php
       target: php-debug
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
     depends_on:
       - "db"
       - "redis"
@@ -26,7 +33,7 @@ services:
   web:
     build: docker/nginx
     depends_on:
-      - "php"
+      - php
     ports:
       - 8080:443
     volumes:
@@ -43,7 +50,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - "db-data:/var/lib/mysql"
+      - db-data:/var/lib/mysql
 
   es:
     image: elasticsearch:7.17.9
@@ -52,17 +59,17 @@ services:
       xpack.security.enabled: false
       ES_JAVA_OPTS: -Xms512m -Xmx512m
     volumes:
-      - "es-data:/usr/share/elasticsearch/data"
+      - es-data:/usr/share/elasticsearch/data
 
   mq:
     image: rabbitmq:3.9-management
     environment:
-      RABBITMQ_NODENAME: "rabbit@mq"
-      RABBITMQ_ERLANG_COOKIE: "erlang-cookie-mq"
+      RABBITMQ_NODENAME: rabbit@mq
+      RABBITMQ_ERLANG_COOKIE: erlang-cookie-mq
     ports:
       - 15672:15672
     volumes:
-      - "mq-data:/var/lib/rabbitmq"
+      - mq-data:/var/lib/rabbitmq
 
   redis:
     image: redis:7.0
@@ -73,6 +80,30 @@ services:
     image: mailhog/mailhog:v1.0.1
     ports:
       - 8025:8025
+
+  loki:
+    image: grafana/loki:2.7.4
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - ./docker/loki/config.yml:/etc/loki/config.yml
+
+  promtail:
+    image: grafana/promtail:2.7.4
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - ./src/var/log:/var/log
+      - ./docker/promtail/config.yml:/etc/promtail/config.yml
+    depends_on:
+      - loki
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    depends_on:
+      - promtail
 
 volumes:
   db-data:
