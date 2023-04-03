@@ -21,14 +21,14 @@ services:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     depends_on:
-      - "db"
-      - "redis"
-      - "es"
-      - "mail"
+      - db
+      - redis
+      - es
+      - mail
     volumes:
       - ./src:/var/www/html
     extra_hosts:
-        - "host.docker.internal:host-gateway"
+        - host.docker.internal:host-gateway
       
   web:
     build: docker/nginx

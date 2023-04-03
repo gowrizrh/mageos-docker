@@ -2,7 +2,7 @@
 A super simple docker compose setup for local development.
 
 ## Features
-* Fast, simple: No custom scripts or wrappers. Just plain `docker compose
+* Fast, simple: No custom scripts or wrappers. Just plain `docker compose`
 * Xdebug support: There is no need to toggle xdebug on/off. Set the `XDEBUG_SESSION` cookie to get into debugging mode.
 
 
