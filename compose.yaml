@@ -88,6 +88,8 @@ services:
     command: -config.file=/etc/loki/config.yml
     volumes:
       - ./docker/loki/config.yml:/etc/loki/config.yml
+    profiles:
+      - grafana
 
   promtail:
     image: grafana/promtail:2.7.4
@@ -97,6 +99,8 @@ services:
       - ./docker/promtail/config.yml:/etc/promtail/config.yml
     depends_on:
       - loki
+    profiles:
+      - grafana
 
   grafana:
     image: grafana/grafana:latest
@@ -106,6 +110,8 @@ services:
       - 3000:3000
     depends_on:
       - promtail
+    profiles:
+      - grafana
 
 volumes:
   db-data:
