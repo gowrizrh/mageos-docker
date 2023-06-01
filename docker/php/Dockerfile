@@ -1,14 +1,18 @@
 FROM php:8.1.4-fpm-bullseye as php
 
 ARG UID ${UID}
-ARG GID {GID}
+ARG GID ${GID}
 
 RUN groupadd -g ${GID} --system mygroup
-RUN useradd --no-log-init --create-home --shell /bin/bash --system -s /bin/sh -g mygroup -u ${UID} myuser
+RUN useradd --no-log-init --create-home --shell /bin/bash --system -s /bin/bash -g mygroup -u ${UID} myuser
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN install-php-extensions @composer opcache gd bcmath zip intl xsl pdo_mysql soap sockets
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends --assume-yes --quiet install nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
 ADD https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 RUN chmod +x /usr/local/bin/mhsendmail
