@@ -17,7 +17,6 @@ services:
   php-debug:
     build:
       context: docker/php
-      target: php-debug
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
@@ -29,8 +28,17 @@ services:
     volumes:
       - ./src:/var/www/html
     extra_hosts:
-        - host.docker.internal:host-gateway
-      
+      - host.docker.internal:host-gateway
+
+  node:
+    image: node:18.16-buster
+    entrypoint: /bin/bash
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+    profiles:
+      - cli
+
   web:
     build: docker/nginx
     depends_on:
@@ -113,6 +121,8 @@ services:
       - promtail
     profiles:
       - grafana
+    environment:
+      - GF_INSTALL_PLUGINS=redis-datastore
 
 volumes:
   db-data:
