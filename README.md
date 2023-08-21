@@ -48,11 +48,11 @@ bin/magento setup:install \
 --currency=AUD \
 --timezone=Australia/Adelaide \
 --use-rewrites=1 \
---search-engine=elasticsearch7 \
---elasticsearch-host=es \
---elasticsearch-port=9200 \
---elasticsearch-index-prefix=magento2 \
---elasticsearch-timeout=15 \
+--search-engine=opensearch \
+--opensearch-host=es \
+--opensearch-port=9200 \
+--opensearch-index-prefix=magento2 \
+--opensearch-timeout=15 \
 --amqp-host=mq \
 --amqp-port=5672 \
 --amqp-user=guest \

@@ -9,7 +9,7 @@ services:
     depends_on:
       - db
       - redis
-      - es
+      - os
       - mail
     volumes:
       - ./src:/var/www/html
@@ -23,7 +23,7 @@ services:
     depends_on:
       - db
       - redis
-      - es
+      - os
       - mail
     volumes:
       - ./src:/var/www/html
@@ -61,14 +61,14 @@ services:
     volumes:
       - db-data:/var/lib/mysql
 
-  es:
-    image: elasticsearch:7.17.9
+  os:
+    image: opensearchproject/opensearch:2
     environment:
       discovery.type: single-node
-      xpack.security.enabled: false
-      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+      DISABLE_SECURITY_PLUGIN: true
     volumes:
-      - es-data:/usr/share/elasticsearch/data
+      - os-data:/usr/share/opensearch/data
 
   mq:
     image: rabbitmq:3.9-management
@@ -121,13 +121,10 @@ services:
       - promtail
     profiles:
       - grafana
-    environment:
-      - GF_INSTALL_PLUGINS=redis-datastore
 
 volumes:
   db-data:
-  es-data:
-  es-plugin-data:
+  os-data:
   mq-data:
   redis-data:
   grafana-data:

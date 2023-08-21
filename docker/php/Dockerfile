@@ -1,4 +1,4 @@
-FROM php:8.1.4-fpm-bullseye as php
+FROM php:8.2-fpm-bullseye as php
 
 ARG UID ${UID}
 ARG GID ${GID}
