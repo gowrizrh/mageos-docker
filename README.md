@@ -49,7 +49,7 @@ bin/magento setup:install \
 --timezone=Australia/Adelaide \
 --use-rewrites=1 \
 --search-engine=opensearch \
---opensearch-host=es \
+--opensearch-host=os \
 --opensearch-port=9200 \
 --opensearch-index-prefix=magento2 \
 --opensearch-timeout=15 \
