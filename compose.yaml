@@ -13,6 +13,7 @@ services:
       - mail
     volumes:
       - ./src:/var/www/html
+      - ~/.composer/cache:/home/admin/.composer/cache
 
   php-debug:
     build:
@@ -27,6 +28,7 @@ services:
       - mail
     volumes:
       - ./src:/var/www/html
+      - ~/.composer/cache:/home/admin/.composer/cache
     extra_hosts:
       - host.docker.internal:host-gateway
 
@@ -60,6 +62,7 @@ services:
       - 3306:3306
     volumes:
       - db-data:/var/lib/mysql
+      - ./docker/db:/docker-entrypoint-initdb.d
 
   os:
     image: opensearchproject/opensearch:2
@@ -86,7 +89,7 @@ services:
       - redis-data:/data
 
   mail:
-    image: mailhog/mailhog:v1.0.1
+    image: axllent/mailpit:v1.10
     ports:
       - 8025:8025
 

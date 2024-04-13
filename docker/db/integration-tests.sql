@@ -1,0 +1,5 @@
+CREATE DATABASE IF NOT EXISTS magento2_integration;
+CREATE DATABASE IF NOT EXISTS magento2_rest;
+CREATE DATABASE IF NOT EXISTS magento2_graphql;
+GRANT ALL ON *.* TO 'magento2'@'%';
+FLUSH PRIVILEGES;
