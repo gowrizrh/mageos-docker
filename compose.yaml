@@ -73,6 +73,14 @@ services:
     volumes:
       - os-data:/usr/share/opensearch/data
 
+  os-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.9.0
+    ports:
+      - 5601:5601
+    environment:
+      OPENSEARCH_HOSTS: '["http://os:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
+
   mq:
     image: rabbitmq:3.9-management
     environment:
@@ -87,6 +95,13 @@ services:
     image: redis:7.0
     volumes:
       - redis-data:/data
+
+  insights:
+    image: redis/redisinsight:latest
+    ports:
+      - 5540:5540
+    volumes:
+      - insights-data:/data
 
   mail:
     image: axllent/mailpit:v1.10
@@ -131,3 +146,5 @@ volumes:
   mq-data:
   redis-data:
   grafana-data:
+  insights-data:
+
